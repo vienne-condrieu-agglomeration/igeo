@@ -1,0 +1,137 @@
+---
+# INFORMATION SUR LE PROJET
+site_name: Base documentaire
+site_description: >-
+  Retrouvez ici toute la documentation produite par le service Information Géographique et Observatoire
+  de Vienne Condrieu AGglomération
+site_author: Fabien ALLAMANCHE
+# site_url: https://doc-igeo.vienne-condrieu-agglomeration.fr/
+copyright: 2024 &copy; Vienne Condrieu Agglomération
+
+# DÉPÔT
+repo_name: vca/base-documentaire
+repo_url: https://github.com/vienne-condrieu-agglomeration/igeo
+edit_uri: edit/master/content
+
+# STRUCTURE DE DOSSIER PERSONNALISÉE
+docs_dir: ./content
+
+# THÈME
+theme:
+  name: material
+  language: fr
+  custom_dir: theme
+  logo: assets/images/logo/vca-logo-white.png
+  favicon: assets/images/logo/favicon.png
+  palette:
+    primary: indigo
+    accent: pink
+  font:
+    text: Encode Sans
+    code: Source Code Pro
+  features:
+    # - navigation.instant
+    # - navigation.instant.prefetch
+    - navigation.sections # prevents collapsible sections
+    - navigation.indexes # section index pages
+    - navigation.expand #expands sections by default
+    - navigation.tabs # section tabs along the top
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    #- toc.integrate # moves toc to the left
+    #- content.action.edit
+    #- content.action.view
+    - content.code.annotate
+    - content.code.copy
+    # - content.code.select
+    - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+
+# PERSONNALISATION  
+extra:
+  social:
+    - icon: fontawesome/brands/mastodon 
+      link: https://mapstodon.space/@allfab
+  # Cookie consent
+  consent:
+    title: Consentement 🍪
+    actions:
+      - accept
+      - reject
+    description: >- 
+      Nous utilisons des cookies pour reconnaître vos visites et préférences répétées,
+      ainsi que pour mesurer l'efficacité de notre documentation et si les utilisateurs
+      trouvent ce qu'ils recherchent. Avec votre consentement, vous nous aidez
+      à améliorer notre documentation.
+      
+# extra_css:
+#   - assets/stylesheets/extra.css
+#   - assets/stylesheets/home.css
+
+# PLUGINS
+plugins:
+  - search:
+      lang: fr
+  - awesome-pages
+  # - blog:
+  #     blog_dir: .
+  - tags:
+      tags_file: tags.md
+  - glightbox
+  - mermaid2
+  - minify:
+      minify_css: true
+      css_files:
+        - assets/stylesheets/extra.css
+        - assets/stylesheets/home.css
+
+# EXTENSIONS POUR AMÉLIORER markdown - https://squidfunk.github.io/mkdocs-material/getting-started/#extensions
+markdown_extensions:
+  - abbr
+  # Admonition - https://squidfunk.github.io/mkdocs-material/extensions/admonition/
+  - admonition
+  - attr_list
+  # Footnotes - https://squidfunk.github.io/mkdocs-material/reference/footnotes/
+  - footnotes
+  - md_in_html
+  # Metadata - https://squidfunk.github.io/mkdocs-material/extensions/metadata
+  - meta
+  # PyMdown extensions - https://squidfunk.github.io/mkdocs-material/extensions/pymdown/
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.smartsymbols
+  - pymdownx.saneheaders
+  # https://facelessuser.github.io/pymdown-extensions/extensions/snippets/
+  # - pymdownx.snippets:
+  #     auto_append: [content/toc_nav_ignored/snippets/glossaire.md]
+  #     base_path:
+  #       - "."
+  #     check_paths: true
+  #     url_download: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  # Permalinks - https://squidfunk.github.io/mkdocs-material/extensions/permalinks/
+  - toc:
+      permalink: "#"

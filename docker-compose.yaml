@@ -1,0 +1,29 @@
+---
+services:
+  material-mkdocs-igeo:
+    container_name: material-mkdocs-igeo
+    build: .
+    restart: unless-stopped
+    ports:
+      - 8088:8000
+    volumes:
+      - ./:/docs
+    environment:
+      TZ:  Europe/Paris
+    networks:
+      - material-mkdocs
+
+# CREATION DU NETWORK material-mkdocs :
+# docker network create --driver=bridge --subnet=172.20.0.0/16 --gateway=172.20.0.1 material-mkdocs
+networks:
+  material-mkdocs:
+    external: true
+
+# networks:
+#   material-mkdocs:
+#     name: material-mkdocs
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: "172.20.0.0/16"
+#           gateway: "172.20.0.1"
