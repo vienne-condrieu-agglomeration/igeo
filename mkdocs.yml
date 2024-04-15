@@ -14,7 +14,7 @@ repo_url: https://github.com/vienne-condrieu-agglomeration/igeo
 edit_uri: edit/master/content
 
 # STRUCTURE DE DOSSIER PERSONNALISÉE
-docs_dir: ./content
+docs_dir: ./docs
 
 # THÈME
 theme:
