@@ -44,7 +44,8 @@ L'installation de PostgreSQL se décompose en six étapes :
 - Installation des paquets,
 - Configuration du service,
 - Initialisation du répertoire de données,
-- Activation et démarrage du service.
+- Activation et démarrage du service,
+- Configuration de l’utilisateur système postgres 
 
 ## __Préparation du système d’exploitation__
 
