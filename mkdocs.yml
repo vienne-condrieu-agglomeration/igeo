@@ -1,6 +1,6 @@
 ---
 # INFORMATION SUR LE PROJET
-site_name: Base documentaire
+site_name: BASE DOCUMENTAIRE
 site_description: >-
   Retrouvez ici toute la documentation produite par le service Information Géographique et Observatoire
   de Vienne Condrieu AGglomération
@@ -51,9 +51,28 @@ theme:
 
 # PERSONNALISATION  
 extra:
-  social:
+  social:    
+    - icon: "fontawesome/solid/rss"
+      link: "https://geotribu.fr/feed_rss_created.xml"
+      name: "S'abonner aux nouveaux contenus via RSS"
+    - icon: "fontawesome/brands/github-alt"
+      link: "https://github.com/vienne-condrieu-agglomeration/"
+      name: "L'organisation Github du service SIG de Vienne Condrieu Agglomération"
     - icon: fontawesome/brands/mastodon 
       link: https://mapstodon.space/@allfab
+      name: "Allfab sur Mapstodon"
+    - icon: "fontawesome/brands/linkedin"
+      link: "https://www.linkedin.com/search/results/all/?keywords=vienne%20condrieu%20agglomeration"
+      name: "Les contenus de Vienne Condrieu Agglomération sur LinkedIn"
+    - icon: "fontawesome/brands/youtube"
+      link: https://www.youtube.com/@viennecondrieuagglomeratio8501
+      name: "Chaîne Youtube de Vienne Condrieu Agglomération"
+    - icon: "fontawesome/brands/facebook"
+      link: "https://www.facebook.com/VienneCondrieuAgglomeration"
+      name: "Page Facebook de Vienne Condrieu Agglomération"
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:<igeo@vienne-condrieu-aggloemration.fr>
+      name: "Nous contacter"
   # Cookie consent
   consent:
     title: Consentement 🍪

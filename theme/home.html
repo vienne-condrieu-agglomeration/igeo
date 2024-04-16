@@ -18,7 +18,8 @@
         </div>
         <div class="tx-hero__content">
           <h1>Base documentaire</h1>
-          <p>Site de partage de la base documentaire du service SIG de <b></b> (Veille sur la géomatique, partage d'articles, de tutoriels sur l'information géographique).</p>
+          <p>Site de partage de la base documentaire du service SIG de <b>Vienne Condrieu Agglomération</b></p>
+          <p>Veille sur la géomatique, partage d'articles et de tutoriels sur l'information géographique</p>
           <a href="{{ page.next_page.url | url }}" title="{{ page.next_page.title | striptags }}" class="md-button md-button--primary">
             Débuter la lecture
           </a>
@@ -29,42 +30,11 @@
       </div>
     </div>
 </section>
-
-<!-- Content -->
-<div class="md-container secondary-section">
-  <div class="g">
-    <!-- Articles -->
-    <div class="section follow" id="articles">
-      <div class="component-wrapper">
-        <div class="first-column">
-          <h3>Articles</h3>
-          <p>
-            Plein d'articles
-          </p>
-        </div>
-        <div class="second-column">
-          <div class="image-wrapper">
-            {% if config.extra.latest %}
-            <a href="/{{ config.extra.latest.articles[0].url_rel | default('/') }}" hreflang={{
-              config.extra.latest.articles[0].language | default('fr') }} title="Lien vers le dernier article">
-              <img src="{{ config.extra.latest.articles[0].image | default('fr') }}"
-                alt="Illustration du dernier article publié" decoding="async" loading="lazy" draggable="false">
-              <div class="image-overlay">{{ config.extra.latest.articles[0].title | default('Placeholder') }}, par {{
-                config.extra.latest.articles[0].authors | default('Valeur par défaut') | join(", ") }}</div>
-            </a>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-</div>
 {% endblock %}
 
 <!-- Content -->
 {% block content %}
+{{ super() }}
 {% endblock %}
 
 <!-- Light footer -->

@@ -29,6 +29,7 @@
 /* Hero */
 .tx-container {
   padding-top: 0rem;
+  /* background: linear-gradient(to bottom, var(--md-primary-fg-color), rgb(154, 140, 135) 99%,#fff 99%); */
   background: linear-gradient(to bottom, var(--md-primary-fg-color), rgb(127, 24, 223) 99%,#fff 99%);
   /* background: linear-gradient(
     to bottom,
