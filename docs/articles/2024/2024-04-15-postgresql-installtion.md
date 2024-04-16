@@ -45,10 +45,9 @@ L'installation de PostgreSQL se décompose en six étapes :
 - Configuration du service,
 - Initialisation du répertoire de données,
 - Activation et démarrage du service,
-- Configuration de l’utilisateur système postgres 
+- Configuration de l’utilisateur système postgres.
 
 ## __Préparation du système d’exploitation__
-
 
 ### Système hôte
 
@@ -64,6 +63,7 @@ La VM (sous VirtualBox) comprend :
 - 1 disque de 20 Go non alloué entièrement.
 
 Toutes les commandes de cet article seront à exécuter avec l’utilisateur `root` ou en utilisant la commande `sudo`.
+
 
 ### __Configuration du système d’exploitation__
 
@@ -116,19 +116,28 @@ Dans `/proc/meminfo`, la ligne `AnonHugePages` doit donc valoir 0.
 
 Quel que soit le système d’exploitation, les systèmes de fichiers ne manquent pas. Linux en est la preuve avec pas moins d’une dizaine de systèmes de fichiers. Le choix peut paraître compliqué mais il se révèle fort simple : il est préférable d’utiliser le système de fichiers préconisé par votre distribution Linux. Ce système est à la base de tous les tests des développeurs de la distribution : il a donc plus de chances d’avoir moins de bugs, tout en proposant plus de performances. Les instances de production PostgreSQL utilisent de fait soit `ext4`, soit `XFS`, qui sont donc **les systèmes de fichiers recommandés**.
 
-En 2016, [un benchmark sur Linux de Tomas Vondra](https://fr.slideshare.net/fuzzycz/postgresql-na-ext4-xfs-btrfs-a-zfs-fosdem-pgday-2016) de différents systèmes de fichiers montrait que `ext4` et `XFS` ont des **performantes équivalentes**.
+!!! tip "Performances et système de fichier"
+
+    En 2016, [un benchmark sur Linux de Tomas Vondra](https://fr.slideshare.net/fuzzycz/postgresql-na-ext4-xfs-btrfs-a-zfs-fosdem-pgday-2016) de différents systèmes de fichiers montrait que `ext4` et `XFS` ont des **performantes équivalentes**.
 
 Autrefois réservé à Solaris, `ZFS` est un système très intéressant grâce à son panel fonctionnel et son mécanisme de `Copy On Write` permettant de faire une copie des fichiers sans arrêter PostgreSQL (snapshot). [OpenZFS](https://openzfs.org/wiki/Main_Page), son portage sous Linux/FreeBSD, entre autres, est un système de fichiers proposant un panel impressionnant de fonctionnalités (dont : checksum, compression, gestion de snapshot), les performances en écriture sont cependant bien moins bonnes qu’avec `ext4` ou `XFS`. De plus, il est plus complexe à mettre en place et à administrer. `Btrfs` est relativement répandu et bien intégré à Linux, et offre une partie des fonctionnalités de `ZFS` ; mais il est également **peu performant avec PostgreSQL**.
 
 `LVM` permet de rassembler plusieurs partitions dans un même `Volume Group`, puis d’y tailler des partitions (`Logical Volumes`) qui seront autant de points de montage. `LVM` permet de changer les tailles des `LV` à volonté, d’ajouter ou supprimer des disques physiques à volonté dans les `VG`, ce qui simplifie l’administration au niveau PostgreSQL.
 
- De nos jours, l’impact en performance est négligeable pour la flexibilité apportée. Si l’on utilise les snapshots de `LVM`, il faudra vérifier l’impact sur les performances. `LVM` peut même gérer le RAID mais, dans l’idéal, il est préférable qu’une bonne carte RAID s’en charge en dessous.
+!!! info "LVM : le choix gagnant"
+    
+    **De nos jours, l’impact en performance est négligeable pour la flexibilité apportée.**
+    
+    Si l’on utilise les snapshots de `LVM`, il faudra vérifier l’impact sur les performances. `LVM` peut même gérer le RAID mais, dans l’idéal, il est préférable qu’une bonne carte RAID s’en charge en dessous.
 
 `NFS` peut sembler intéressant, vu ses fonctionnalités : facilité de mise en œuvre, administration centralisée du stockage, mutualisation des espaces. Cependant, ce système de fichiers est **source de nombreux problèmes avec PostgreSQL**. Si la base tient en mémoire et que les latences possibles ne sont pas importantes, on peut éventuellement utiliser `NFS`. Il faut la garantie que les opérations sont synchrones. Si ce n’est pas le cas, une panne sur la baie peut entraîner une corruption des données. Au minimum, l’option `sync` doit être présente côté serveur et les options `hard, proto=tcp, noac et nointr` doivent être présentes côté client. Si vous souhaitez en apprendre plus sur le sujet des options pour `NFS`, un article détaillé est disponible dans la [documentation de PostgreSQL à partir de la version 12](https://docs.postgresql.fr/current/creating-cluster.html#creating-cluster-nfs).
 
-Par contre, `NFS` est totalement déconseillé dans les environnements critiques avec PostgreSQL. Greg Smith, contributeur très connu, spécialisé dans l’optimisation de PostgreSQL, parle plus longuement [des soucis de NFS avec PostgreSQL](https://www.postgresql.org/message-id/4D2285CF.3050304@2ndquadrant.com). En fait, il y a des dizaines d’exemples de gens ayant eu des problèmes avec `NFS`. Les problèmes de performance sont quasi-systématiques, et ceux de fiabilité fréquents, et compliqués à diagnostiquer (comme illustré [dans ce mail](https://www.postgresql.org/message-id/4D40DDB7.1010000@credativ.com), où le problème venait du noyau Linux).
+!!! danger "NFS et PostgreSQL"
+
+    Par contre, `NFS` est totalement déconseillé dans les environnements critiques avec PostgreSQL. Greg Smith, contributeur très connu, spécialisé dans l’optimisation de PostgreSQL, parle plus longuement [des soucis de NFS avec PostgreSQL](https://www.postgresql.org/message-id/4D2285CF.3050304@2ndquadrant.com). En fait, il y a des dizaines d’exemples de gens ayant eu des problèmes avec `NFS`. Les problèmes de performance sont quasi-systématiques, et ceux de fiabilité fréquents, et compliqués à diagnostiquer (comme illustré [dans ce mail](https://www.postgresql.org/message-id/4D40DDB7.1010000@credativ.com), où le problème venait du noyau Linux).
 
 Sous Windows, la question ne se pose pas : `NTFS` est le seul système de fichiers assez stable. L’installeur fourni par EnterpriseDB dispose d’une protection qui empêche l’installation d’une instance PostgreSQL sur une partition `VFAT`.
+
 
 ##### Partitionnement
 
@@ -169,7 +178,9 @@ Sur les systèmes le supportant, la configuration `noatime` évite l’écriture
 
 `nodiratime` fait de même au niveau du répertoire. Depuis plusieurs années maintenant, `nodiratime` est inclus dans `noatime`.
 
-Pour aller plus loin, l'option `dir_index` permet de modifier la méthode de recherche des fichiers dans un répertoire en utilisant un index spécifique pour accélérer cette opération. L’outil `tune2fs` permet de s’assurer que cette fonctionnalité est activée ou non.
+!!! tip "`dir_index`"
+
+    Pour aller plus loin, l'option `dir_index` permet de modifier la méthode de recherche des fichiers dans un répertoire en utilisant un index spécifique pour accélérer cette opération. L’outil `tune2fs` permet de s’assurer que cette fonctionnalité est activée ou non.
 
 Par exemple, pour une partition /dev/sda1 :
 ``` bash
@@ -264,6 +275,7 @@ root@vm-postgres:~# apt install \
     postgresql-16-pgrouting
 ```
 
+
 ## __Configuration du service__
 
 Comme nous allons placer le répertoire de données dans un répertoire autre que l'habituel `/var/lib/postgresql/16/data`, il nous faut modifier la configuration du service.
@@ -293,10 +305,10 @@ Enfin, nous pouvons initialiser le répertoire des données :
 root@vm-postgres:~# PGSETUP_INITDB_OPTIONS="--data-checksums --waldir /srv/wal" /usr/pgsql-15/bin/postgresql-15-setup initdb
 ```
 
-
 L'option `--data-checksums` permet d'activer les sommes de contrôle sur les fichiers de données. Ces sommes de contrôle permettent d’être prévenu en cas de corruption dans les fichiers de données. L'option `--waldir` permet d'indiquer un autre répertoire de stockage pour les journaux de transactions.
 
 La commande `initdb` va créer les répertoires et fichiers nécessaires pour pouvoir démarrer PostgreSQL. Ces fichiers étant créés, il ne nous reste plus qu'à activer le service et le démarrer.
+
 
 ## __Activation et démarrage du service__
 
