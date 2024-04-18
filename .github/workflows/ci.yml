@@ -37,6 +37,7 @@ jobs:
           pip install mkdocs-mermaid2-plugin
           pip install mkdocs-glightbox
           pip install mkdocs-open-in-new-tab
+          pip install mkdocs-autolinks-plugin
         
       - name: Deploy MkDocs
         run: mkdocs gh-deploy --force
