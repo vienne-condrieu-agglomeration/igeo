@@ -58,7 +58,7 @@ hide:
 
     Retrouvez ici l'ensemble des articles rédigés sur le site par catégorie.
 
-    [:octicons-arrow-right-24: Découvrir les articles par catégorie](#)
+    [:octicons-arrow-right-24: Découvrir les articles par catégorie](/tags)
 
 
 -   :material-account-group:{ .lg .middle } __À propos__

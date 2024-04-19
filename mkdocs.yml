@@ -106,8 +106,7 @@ plugins:
   - search:
       lang: fr
   - autolinks
-  - awesome-pages
-  
+  - awesome-pages  
   - glightbox
   - mermaid2
   - tags:
