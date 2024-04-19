@@ -14,13 +14,13 @@ repo_url: https://github.com/vienne-condrieu-agglomeration/igeo
 edit_uri: edit/master/docs
 
 # STRUCTURE DE DOSSIER PERSONNALISÉE
-docs_dir: ./docs
+# docs_dir: ./docs/theme
 
 # THÈME
 theme:
   name: material
   language: fr
-  custom_dir: theme
+  # custom_dir: ./docs
   logo: assets/images/logo/vca-logo-white.png
   favicon: assets/images/logo/favicon.png
   palette:
@@ -109,6 +109,7 @@ plugins:
   - awesome-pages  
   - glightbox
   - mermaid2
+  - open-in-new-tab
   - tags:
       tags_file: tags.md
   # - minify:
